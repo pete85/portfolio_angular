@@ -1,9 +1,11 @@
-import {throwError as observableThrowError, Observable} from 'rxjs/index';
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams, HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import {throwError as observableThrowError, Observable, BehaviorSubject} from 'rxjs';
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpParams, HttpErrorResponse, HttpResponse} from '@angular/common/http';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/catch';
-
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/switchMap';
+import { map, filter, switchMap } from 'rxjs/operators';
 
 
 @Injectable({
@@ -16,13 +18,25 @@ export class WorkService {
   constructor(private _http: HttpClient) {
   }
 
-  getWorks(): Observable<any> {
+
+  // getItems(table, id) {
+  //   this._http
+  //     .get(this.url + '/' + table + '/' + id).pipe(map(data => {
+  //   })).subscribe(result => {
+  //     console.log(result);
+  //   });
+  // };
+
+  getWorks(table, id): Observable<any> {
 
     return this._http
-      .get(this.url + '/')
+      .get(this.url + '/' + table + '/' + id)
       .map((response: HttpResponse<any>) => response)
-      .catch(error => {
-        // return Observable.of({description: 'Error Value Emitted'});
-      });
+      .catch(this.handleError);
+  }
+
+  private handleError(error: HttpErrorResponse) {
+    console.error(error);
+    return observableThrowError(error);
   }
 }
