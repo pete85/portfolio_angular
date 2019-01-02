@@ -21,7 +21,7 @@ export class AppComponent implements OnInit {
   }
 
   getWorks(table, id) {
-    const sub = this._workService.getWorks(table, id).subscribe(
+    const sub = this._workService.getItems(table, id).subscribe(
       data => {
         console.log('data: ', data);
         if (data !== null) {
