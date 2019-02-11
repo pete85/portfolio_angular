@@ -1,4 +1,4 @@
-import {throwError as observableThrowError, Observable, BehaviorSubject} from 'rxjs';
+import {BehaviorSubject, Observable, throwError as observableThrowError} from 'rxjs';
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpParams, HttpErrorResponse, HttpResponse} from '@angular/common/http';
 // import 'rxjs/add/observable/of';
@@ -19,12 +19,19 @@ export class WorkService {
   }
 
 
-  getItems(table, id) {
+  getItems(table, id): Observable<any> {
     return this._http
       .get(this.url + '/' + table + '/' + id)
-      .pipe(map(data => {
-      }));
+      .pipe(map((response: any) => response.json()));
   }
+
+  // getItems(table, id): Observable<any> {
+  //   return this._http
+  //     .get(this.url + '/' + table + '/' + id)
+  //     .map((response: HttpResponse<any>) => response['data'])
+  //     .catch(this.handleError);
+  // }
+
 
   getWorks(table, id): Observable<any> {
 
